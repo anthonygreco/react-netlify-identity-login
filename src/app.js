@@ -17,26 +17,23 @@ import Login from './login';
 import './app.css';
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false); // eslint-disable-line no-unused-vars
-  const [user, setUser] = useState(null); // eslint-disable-line no-unused-vars
+  const [user, setUser] = useState(netlifyIdentity.currentUser());
 
   const PrivateRoute = () => {
-    const user = netlifyIdentity.currentUser();
     const location = useLocation();
     return user ? <Outlet /> : <Navigate to='/login' state={{ from: location }} />;
   };
   
-  const signin = callback => {
-    setIsAuthenticated(true);
+  const login = callback => {
     netlifyIdentity.open();
     netlifyIdentity.on('login', userResponse => {
+      netlifyIdentity.close();
       setUser(userResponse);
       callback();
     });
   };
   
-  const signout = callback => {
-    setIsAuthenticated(false);
+  const logout = callback => {
     netlifyIdentity.logout();
     netlifyIdentity.on('logout', () => {
       setUser(null);
@@ -48,9 +45,9 @@ function App() {
     createRoutesFromElements(
       <Route>
         <Route path="/" element={<Public />} />
-        <Route path="/login" element={<Login login={signin} />} />
+        <Route path="/login" element={<Login login={login} />} />
         <Route path="/private" element={<PrivateRoute />}>
-          <Route path="/private" element={<Private logout={signout} />} />
+          <Route path="/private" element={<Private user={user} logout={logout} />} />
         </Route>
       </Route>
     )

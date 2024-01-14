@@ -1,11 +1,7 @@
 import { useNavigate } from 'react-router-dom';
-import netlifyIdentity from 'netlify-identity-widget';
 
-import './app.css';
-
-function Private({ logout }) {
+function Private({ user, logout }) {
   const navigate = useNavigate();
-  const user = netlifyIdentity.currentUser();
 
   const handleLogout = () => {
     logout(() => {

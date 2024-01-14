@@ -1,7 +1,5 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import './app.css';
-
 function Login({ login }) {
   const navigate = useNavigate();
   const location = useLocation();
