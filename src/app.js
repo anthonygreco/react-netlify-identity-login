@@ -3,16 +3,17 @@ import {
   createRoutesFromElements,
   Route,
   RouterProvider,
-  Navigate,
-  Outlet
+  Outlet,
+  useLocation,
+  Navigate
 } from 'react-router-dom';
 import netlifyIdentity from 'netlify-identity-widget';
 
 import Public from './public';
 import Private from './private';
+import Login from './login';
 
 import './app.css';
-import React from 'react';
 
 const netlifyAuth = {
   isAuthenticated: false,
@@ -35,12 +36,16 @@ const netlifyAuth = {
   }
 };
 
-const PrivateRoute = () => netlifyAuth.isAuthenticated ? <Outlet /> : <Navigate to="/" />;
+const PrivateRoute = () => {
+  const location = useLocation();
+  return netlifyAuth.isAuthenticated ? <Outlet /> : <Navigate to='/login' state={{ from: location }} />;
+};
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route>
       <Route path="/" element={<Public />} />
+      <Route path="/login" element={<Login auth={netlifyAuth} />} />
       <Route path="/private" element={<PrivateRoute />}>
         <Route path="/private" element={<Private />} />
       </Route>
