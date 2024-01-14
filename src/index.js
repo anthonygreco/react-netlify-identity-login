@@ -1,6 +1,12 @@
 import { createRoot } from 'react-dom/client';
-import './index.css';
+// import netlifyIdentity from 'netlify-identity-widget';
+
 import App from './app';
+
+import './index.css';
+
+// window.netlifyIdentity = netlifyIdentity;
+// netlifyIdentity.init();
 
 const container = document.getElementById('root');
 const root = createRoot(container);
