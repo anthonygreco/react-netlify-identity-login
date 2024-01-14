@@ -1,3 +1,26 @@
+.app {
+  text-align: center;
+  width: 100vw;
+  height: 100vh;
+}
+
+.nav {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%);
+  color: #eeeeee;
+  font-size: 3rem;
+}
+
+.nav a, .nav a:hover, .nav a:visited, .nav a:active {
+  color: #eeeeee;
+  text-decoration: none;
+}
+
+.nav a:hover {
+  text-decoration: underline;
+}
+
 .public  {
   background-color: #0000ee;
 }

@@ -20,9 +20,14 @@ const router = createBrowserRouter(
 
 function App() {
   return (
-    <div className="app">
-      <RouterProvider router={router} />
-    </div>
+    <>
+      <div className="nav">
+        <a href="/">Public</a> | <a href="/private">Private</a>
+      </div>
+      <div>
+        <RouterProvider router={router} />
+      </div>
+    </>
   );
 }
 

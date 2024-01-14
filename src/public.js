@@ -2,9 +2,7 @@ import './app.css';
 
 function Public() {
   return (
-    <div className="public">
-      
-    </div>
+    <div className="app public"></div>
   );
 }
 
