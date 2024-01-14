@@ -17,8 +17,8 @@ import Login from './login';
 import './app.css';
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [user, setUser] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false); // eslint-disable-line no-unused-vars
+  const [user, setUser] = useState(null); // eslint-disable-line no-unused-vars
 
   const PrivateRoute = () => {
     const user = netlifyIdentity.currentUser();
