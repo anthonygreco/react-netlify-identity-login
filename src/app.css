@@ -20,11 +20,14 @@
   text-decoration: underline;
 }
 
+.public , .private {
+  padding-top: 100px;
+}
 .public  {
-  padding-top: 100px;;
   background-color: #000033;
 }
 
 .private  {
   background-color: #330000;
 }
+

@@ -7,6 +7,7 @@ import {
   useLocation,
   Navigate
 } from 'react-router-dom';
+import { useState } from 'react';
 import netlifyIdentity from 'netlify-identity-widget';
 
 import Public from './public';
@@ -15,45 +16,46 @@ import Login from './login';
 
 import './app.css';
 
-const netlifyAuth = {
-  isAuthenticated: false,
-  user: null,
-  authenticate(callback) {
-    this.isAuthenticated = true;
+function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [user, setUser] = useState(null);
+
+  const PrivateRoute = () => {
+    const user = netlifyIdentity.currentUser();
+    const location = useLocation();
+    return user ? <Outlet /> : <Navigate to='/login' state={{ from: location }} />;
+  };
+  
+  const signin = callback => {
+    setIsAuthenticated(true);
     netlifyIdentity.open();
-    netlifyIdentity.on('login', user => {
-      this.user = user;
-      callback(user);
-    });
-  },
-  signout(callback) {
-    this.isAuthenticated = false;
-    netlifyIdentity.logout();
-    netlifyIdentity.on('logout', () => {
-      this.user = null;
+    netlifyIdentity.on('login', userResponse => {
+      setUser(userResponse);
       callback();
     });
-  }
-};
+  };
+  
+  const signout = callback => {
+    setIsAuthenticated(false);
+    netlifyIdentity.logout();
+    netlifyIdentity.on('logout', () => {
+      setUser(null);
+      callback();
+    });
+  };
 
-const PrivateRoute = () => {
-  const location = useLocation();
-  return netlifyAuth.isAuthenticated ? <Outlet /> : <Navigate to='/login' state={{ from: location }} />;
-};
-
-const router = createBrowserRouter(
-  createRoutesFromElements(
-    <Route>
-      <Route path="/" element={<Public />} />
-      <Route path="/login" element={<Login auth={netlifyAuth} />} />
-      <Route path="/private" element={<PrivateRoute />}>
-        <Route path="/private" element={<Private />} />
+  const router = createBrowserRouter(
+    createRoutesFromElements(
+      <Route>
+        <Route path="/" element={<Public />} />
+        <Route path="/login" element={<Login login={signin} />} />
+        <Route path="/private" element={<PrivateRoute />}>
+          <Route path="/private" element={<Private logout={signout} />} />
+        </Route>
       </Route>
-    </Route>
-  )
-);
+    )
+  );
 
-function App() {
   return (
     <>
       <div className="nav">

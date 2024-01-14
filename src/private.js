@@ -1,12 +1,23 @@
+import { useNavigate } from 'react-router-dom';
 import netlifyIdentity from 'netlify-identity-widget';
 
 import './app.css';
 
-function Private() {
+function Private({ logout }) {
+  const navigate = useNavigate();
   const user = netlifyIdentity.currentUser();
-  console.log('user', user);
+
+  const handleLogout = () => {
+    logout(() => {
+      navigate('/');
+    });
+  };
+
   return (
-    <div className="app private">Welcome</div>
+    <div className="app private">
+      <p>Welcome {user.user_metadata.full_name}</p>
+      <button onClick={handleLogout}>Log Out</button>
+    </div>
   );
 }
 
